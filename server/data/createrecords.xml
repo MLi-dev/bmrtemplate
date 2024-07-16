@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Request
+	xmlns="http://www.eidr.org/schema"
+	xmlns:doi="http://www.doi.org/2010/DOISchema"
+	xmlns:md="http://www.movielabs.com/schema/md/v2.8/md"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<Operation>
+		<Create type="CreateBasic">
+			<Basic
+				xmlns="http://www.eidr.org/schema"
+				xmlns:md="http://www.movielabs.com/schema/md/v2.8/md">
+				<BaseObjectData>
+					<StructuralType>Abstraction</StructuralType>
+					<Mode>AudioVisual</Mode>
+					<ReferentType>Movie</ReferentType>
+					<ResourceName lang="en" titleClass="release">MLI</ResourceName>
+					<AlternateResourceName lang="en" titleClass="AKA">MYLi</AlternateResourceName>
+					<OriginalLanguage mode="Audio" type="primary">en</OriginalLanguage>
+					<AssociatedOrg idType="EIDRPartyID" organizationID="10.5237/9241-BC57" role="producer">
+						<md:DisplayName>MatthewLiCompany</md:DisplayName>
+						<md:AlternateName>MGM</md:AlternateName>
+					</AssociatedOrg>
+					<ReleaseDate>2011-11-01</ReleaseDate>
+                    <CountryOfOrigin>US</CountryOfOrigin>
+					<Status>valid</Status>
+					<ApproximateLength>PT45M</ApproximateLength>
+					<Administrators>
+						<Registrant>10.5237/9241-BC57</Registrant>
+					</Administrators>
+				</BaseObjectData>
+			</Basic>
+		</Create>
+	</Operation>
+</Request>
