@@ -1,71 +1,47 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import APIForm from "./components/APIForm";
-import Gallery from "./components/Gallery";
-import QueryResult from "./components/QueryResult";
-import ResolutionResult from "./components/ResolutionResult";
 import EditTemplate from "./components/editTemplate";
+import determineFormatType from "./utils/FormatTypeUtil";
 
 const App = () => {
 	const [inputs, setInputs] = useState({
-		title: "",
 		eidr_id: "",
 	});
 	const API_URL =
 		process.env.NODE_ENV === "production"
 			? "https://bmrtemplate-production.up.railway.app"
 			: "http://localhost:3001";
-	const [currentImage, setCurrentImage] = useState(null);
-	const [prevImages, setPrevImages] = useState([]);
-	const [response, setResponse] = useState({});
+
 	const [searchType, setSearchType] = useState("");
-	const [eidrs, setEIDRs] = useState([]);
+	const [editEIDRList, setEditEIDRList] = useState([]);
+	const [nonEpisodicList, setNonEpisodicList] = useState([]);
+	const [episodicList, setEpisodicList] = useState([]);
 	const [editXML, setEditXML] = useState([]);
+	const [episodicXML, setEpisodicXML] = useState([]);
+	const [nonEpisodicXML, setNonEpisodicXML] = useState([]);
 	const [hasEditFormat, setHasEditFormat] = useState(false);
 	const [hasEpisodic, setHasEpisodic] = useState(false);
 	const [hasNonEpisodic, setHasNonEpisodic] = useState(false);
 
-	const callAPI = async (query, requestOptions) => {
+	const callAPI = async (query, requestOptions, eidr_id) => {
 		const response = await fetch(query, requestOptions);
 		const text = await response.text(); // Changed from json() to text() to handle XML
 		const parser = new DOMParser();
 		const xmlDoc = await parser.parseFromString(text, "application/xml");
-		//add the xmlDoc to setEditXML existing array
-		setEditXML((prev) => [...prev, xmlDoc]);
-		const baseObjectDatas = xmlDoc.getElementsByTagName("BaseObjectData");
-		if (baseObjectDatas.length > 0) {
-			const baseObjectData = baseObjectDatas[0];
-			let ReferentType;
-			if (
-				baseObjectData.getElementsByTagName("ReferentType") &&
-				baseObjectData.getElementsByTagName("ReferentType").length > 0
-			) {
-				ReferentType =
-					baseObjectData.getElementsByTagName("ReferentType")[0].textContent;
-				if (ReferentType === "Series" || ReferentType === "Season") {
-					setHasEpisodic(true);
-				}
-			}
-		}
-		const extraObjectMetadatas = xmlDoc.getElementsByTagName(
-			"ExtraObjectMetadata"
-		);
-		if (extraObjectMetadatas.length > 0) {
-			const extraObjectMetadata = extraObjectMetadatas[0];
-			if (extraObjectMetadata.getElementsByTagName("EditInfo")) {
-				setHasEditFormat(true);
-			} else {
-				if (
-					!extraObjectMetadata.getElementsByTagName("SeriesInfo") ||
-					!extraObjectMetadata.getElementsByTagName("SeasonInfo") ||
-					!extraObjectMetadata.getElementsByTagName("ClipInfo") ||
-					!extraObjectMetadata.getElementsByTagName("ManifestationInfo") ||
-					!extraObjectMetadata.getElementsByTagName("CompilationInfo") ||
-					!extraObjectMetadata.getElementsByTagName("EpisodeInfo")
-				) {
-					setHasNonEpisodic(true);
-				}
-			}
+		const formatType = determineFormatType(xmlDoc);
+		if (formatType === "Edit") {
+			setEditXML((prev) => [...prev, xmlDoc]);
+			setHasEditFormat(true);
+			setEditEIDRList((prev) => [...prev, eidr_id]);
+		} else if (formatType === "Episodic") {
+			setEpisodicXML((prev) => [...prev, xmlDoc]);
+			setHasEpisodic(true);
+			setEpisodicList((prev) => [...prev, eidr_id]);
+		} else if (formatType === "NonEpisodic") {
+			setNonEpisodicXML((prev) => [...prev, xmlDoc]);
+			setHasNonEpisodic(true);
+			setNonEpisodicList((prev) => [...prev, eidr_id]);
 		}
 	};
 
@@ -83,14 +59,13 @@ const App = () => {
 				body: JSON.stringify({ title: { words: inputs.title } }),
 			};
 		} else {
-			setEIDRs((prev) => [...prev, inputs.eidr_id]);
 			query = `${API_URL}/api/resolve`;
 			requestOptions = {
 				...requestOptions,
 				body: JSON.stringify({ eidr_id: inputs.eidr_id }),
 			};
 		}
-		callAPI(query, requestOptions).catch(console.error);
+		callAPI(query, requestOptions, inputs.eidr_id).catch(console.error);
 	};
 	const reset = () => {
 		setInputs({
@@ -99,20 +74,7 @@ const App = () => {
 		});
 	};
 	const submitForm = () => {
-		let defaultValues = {
-			title: "Seinfeld",
-			eidr_id: "10.5240/301C-0DFA-B184-5448-BB3E-I",
-		};
-		// for (const [key, value] of Object.entries(inputs)) {
-		// 	if (value === "") {
-		// 		inputs[key] = defaultValues[key];
-		// 	}
-		// }
-		if (inputs.title === "" || inputs.title === " ") {
-			setSearchType("byEidrId");
-		} else {
-			setSearchType("byQuery");
-		}
+		setSearchType("byEidrId");
 		makeQuery();
 	};
 
@@ -131,25 +93,60 @@ const App = () => {
 				}
 				onSubmit={submitForm}
 			/>
-			{currentImage ? (
-				<img
-					className='mx-auto mt-4 rounded-lg shadow-lg'
-					src={currentImage}
-					alt='Screenshot returned'
-				/>
-			) : (
-				<div></div>
-			)}
-			<br></br>
+			<table className='min-w-full divide-y divide-gray-200 mt-6'>
+				<thead className='bg-gray-50'>
+					<tr>
+						<th
+							scope='col'
+							className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+						>
+							Episodic
+						</th>
+						<th
+							scope='col'
+							className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+						>
+							NonEpisodic
+						</th>
+						<th
+							scope='col'
+							className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+						>
+							Edit
+						</th>
+					</tr>
+				</thead>
+				<tbody className='bg-white divide-y divide-gray-200'>
+					{/* Example Row - Repeat or dynamically generate rows based on your data */}
+					<tr>
+						<td className='px-6 py-4 whitespace-nowrap'>
+							{episodicList?.length > 0 &&
+								episodicList.map((eidr_id) => <div>{eidr_id}</div>)}
+							{hasEpisodic && (
+								<EditTemplate xmlArray={episodicXML} buttonName={"Episodic"} />
+							)}
+						</td>
+						<td className='px-6 py-4 whitespace-nowrap'>
+							{nonEpisodicList?.length > 0 &&
+								nonEpisodicList.map((eidr_id) => <div>{eidr_id}</div>)}
+							{hasNonEpisodic && (
+								<EditTemplate
+									xmlArray={nonEpisodicXML}
+									buttonName={"NonEpisodic"}
+								/>
+							)}
+						</td>
+						<td className='px-6 py-4 whitespace-nowrap'>
+							{editEIDRList?.length > 0 &&
+								editEIDRList.map((eidr_id) => <div>{eidr_id}</div>)}
+							{hasEditFormat && (
+								<EditTemplate xmlArray={editXML} buttonName={"Edit"} />
+							)}
+						</td>
+					</tr>
+				</tbody>
+			</table>
 
-			{eidrs.length > 0 && eidrs.map((eidr_id) => <div>{eidr_id}</div>)}
-			{hasEpisodic && (
-				<EditTemplate xmlArray={editXML} buttonName={"Episodic"} />
-			)}
-			{hasEditFormat && <EditTemplate xmlArray={editXML} buttonName={"Edit"} />}
-			{hasNonEpisodic && (
-				<EditTemplate xmlArray={editXML} buttonName={"NonEpisodic"} />
-			)}
 			<br></br>
 		</div>
 	);
