@@ -6,7 +6,7 @@
 	"scripts": {
 		"dev": "vite",
 		"preview": "vite preview",
-		"start": "serve build -s -n -L -p $PORT",
+		"start": "npx http-server ./dist",
 		"build": "vite build"
 	},
 	"dependencies": {
