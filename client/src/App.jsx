@@ -14,6 +14,10 @@ const App = () => {
 		title: "",
 		eidr_id: "",
 	});
+	const API_URL =
+		process.env.NODE_ENV === "production"
+			? "bmrtemplate-production.up.railway.app"
+			: "http://localhost:3001";
 	const [currentImage, setCurrentImage] = useState(null);
 	const [prevImages, setPrevImages] = useState([]);
 	const [response, setResponse] = useState({});
@@ -76,14 +80,14 @@ const App = () => {
 		//let query = `https://cors-anywhere.herokuapp.com/https://proxy.eidr.org/resolve/${inputs.eidr_id}?type=Full&followAlias=false`;
 		let query = "";
 		if (searchType === "byQuery") {
-			query = `http://localhost:3001/api/query`;
+			query = `${API_URL}/api/query`;
 			requestOptions = {
 				...requestOptions,
 				body: JSON.stringify({ title: { words: inputs.title } }),
 			};
 		} else {
 			setEIDRs((prev) => [...prev, inputs.eidr_id]);
-			query = `http://localhost:3001/api/resolve`;
+			query = `${API_URL}/api/resolve`;
 			requestOptions = {
 				...requestOptions,
 				body: JSON.stringify({ eidr_id: inputs.eidr_id }),
