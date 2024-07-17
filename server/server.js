@@ -9,7 +9,7 @@ app.use(
 	cors({
 		origin: [
 			"http://bmrtemplate-production-0181.up.railway.app",
-			"http://localhost:5173",
+			"http://localhost:3000",
 		],
 	})
 );

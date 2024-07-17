@@ -4,10 +4,7 @@ import APIForm from "./components/APIForm";
 import Gallery from "./components/Gallery";
 import QueryResult from "./components/QueryResult";
 import ResolutionResult from "./components/ResolutionResult";
-import fs from "fs";
 import EditTemplate from "./components/editTemplate";
-
-const ACCESS_KEY = import.meta.env.VITE_APP_ACCESS_KEY;
 
 const App = () => {
 	const [inputs, setInputs] = useState({
