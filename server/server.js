@@ -8,7 +8,7 @@ app.use(xmlparser());
 app.use(
 	cors({
 		origin: [
-			"http://bmrtemplate-production-0181.up.railway.app",
+			"https://client-production-863e.up.railway.app",
 			"http://localhost:3000",
 		],
 	})
