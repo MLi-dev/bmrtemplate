@@ -5,6 +5,7 @@ import Gallery from "./components/Gallery";
 import QueryResult from "./components/QueryResult";
 import ResolutionResult from "./components/ResolutionResult";
 import fs from "fs";
+import EditTemplate from "./utils/editTemplate";
 
 const ACCESS_KEY = import.meta.env.VITE_APP_ACCESS_KEY;
 
@@ -17,13 +18,14 @@ const App = () => {
 	const [prevImages, setPrevImages] = useState([]);
 	const [response, setResponse] = useState({});
 	const [searchType, setSearchType] = useState("");
+	const [editXML, setEditXML] = useState([]);
 
 	const callAPI = async (query, requestOptions) => {
 		const response = await fetch(query, requestOptions);
 		const text = await response.text(); // Changed from json() to text() to handle XML
 		const parser = new DOMParser();
-		const xmlDoc = parser.parseFromString(text, "application/xml");
-		console.log(xmlDoc);
+		const xmlDoc = await parser.parseFromString(text, "application/xml");
+		setEditXML(xmlDoc);
 		const rows = [];
 		const elements = xmlDoc.getElementsByTagName("BaseObjectData"); // Assuming main data is under BaseObjectData
 
@@ -177,6 +179,7 @@ const App = () => {
 					<QueryResult items={response} />
 				)}
 			</div>
+			<EditTemplate xml={editXML} />
 			<br></br>
 		</div>
 	);
