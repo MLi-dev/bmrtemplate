@@ -13,7 +13,7 @@ const App = () => {
 	});
 	const API_URL =
 		process.env.NODE_ENV === "production"
-			? "https://client-production-863e.up.railway.app/"
+			? "https://client-production-863e.up.railway.app"
 			: "http://localhost:3001";
 	const [currentImage, setCurrentImage] = useState(null);
 	const [prevImages, setPrevImages] = useState([]);
