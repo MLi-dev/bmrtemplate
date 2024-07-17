@@ -5,7 +5,14 @@ import xmlparser from "express-xml-bodyparser";
 
 const app = express();
 app.use(xmlparser());
-app.use(cors());
+app.use(
+	cors({
+		origin: [
+			"http://bmrtemplate-production-0181.up.railway.app",
+			"http://localhost:5173",
+		],
+	})
+);
 app.use(express.json());
 app.use("/api", recordRouter);
 app.get("/", (req, res) => {
