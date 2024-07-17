@@ -1,196 +1,196 @@
 {
-    "version": "22",
-    "metadata": {
-        "Unique Row ID": {
-            "required": true
-        },
-        "Parent EIDR/Row ID": {
-            "required": false
-        },
-        "Mode": {
-            "required": false
-        },
-        "Edit Use": {
-            "required": false
-        },
-        "Color Type": {
-            "required": false
-        },
-        "In 3D": {
-            "required": false
-        },
-        "Edit Class 1": {
-            "required": false
-        },
-        "Edit Class 2": {
-            "required": false
-        },
-        "Edit Class 3": {
-            "required": false
-        },
-        "Made for Region 1": {
-            "required": false
-        },
-        "Made for Region 2": {
-            "required": false
-        },
-        "Made for Region 3": {
-            "required": false
-        },
-        "Edit Details 1": {
-            "required": false
-        },
-        "Edit Details Domain 1": {
-            "required": false
-        },
-        "Structural Type": {
-            "required": true
-        },
-        "Referent Type": {
-            "required": true
-        },
-        "Title": {
-            "required": false
-        },
-        "Title Language": {
-            "required": false
-        },
-        "Title Class": {
-            "required": false
-        },
-        "Version Language 1": {
-            "required": false
-        },
-        "Language Mode 1": {
-            "required": false
-        },
-        "Alternate Title 1": {
-            "required": false
-        },
-        "Alt Title Language 1": {
-            "required": false
-        },
-        "Alt Title Class 1": {
-            "required": false
-        },
-        "Country of Origin 1": {
-            "required": false
-        },
-        "Associated Org 1": {
-            "required": false
-        },
-        "Associated Org Role 1": {
-            "required": false
-        },
-        "Associated Org Party ID 1": {
-            "required": false
-        },
-        "Associated Org 2": {
-            "required": false
-        },
-        "Associated Org Role 2": {
-            "required": false
-        },
-        "Associated Org Party ID 2": {
-            "required": false
-        },
-        "Associated Org 3": {
-            "required": false
-        },
-        "Associated Org Role 3": {
-            "required": false
-        },
-        "Associated Org Party ID 3": {
-            "required": false
-        },
-        "Metadata Authority 1": {
-            "required": false
-        },
-        "Metadata Authority Party ID 1": {
-            "required": false
-        },
-        "Release Date": {
-            "required": false
-        },
-        "Publication Status": {
-            "required": false
-        },
-        "Approx Length": {
-            "required": false
-        },
-        "Registrant": {
-            "required": false
-        },
-        "Director 1": {
-            "required": false
-        },
-        "Director 2": {
-            "required": false
-        },
-        "Actor 1": {
-            "required": false
-        },
-        "Actor 2": {
-            "required": false
-        },
-        "Actor 3": {
-            "required": false
-        },
-        "Actor 4": {
-            "required": false
-        },
-        "Alt ID 1": {
-            "required": false
-        },
-        "Domain 1": {
-            "required": false
-        },
-        "Relation 1": {
-            "required": false
-        },
-        "Alt ID 2": {
-            "required": false
-        },
-        "Domain 2": {
-            "required": false
-        },
-        "Relation 2": {
-            "required": false
-        },
-        "Alt ID 3": {
-            "required": false
-        },
-        "Domain 3": {
-            "required": false
-        },
-        "Relation 3": {
-            "required": false
-        },
-        "ISAN": {
-            "required": false
-        },
-        "ISAN Relation": {
-            "required": false
-        },
-        "Description": {
-            "required": false
-        },
-        "Description Language": {
-            "required": false
-        },
-        "Registrant Extra": {
-            "required": false
-        },
-        "Operator's Notes": {
-            "required": false
-        },
-        "Assigned EIDR ID": {
-            "required": false
-        },
-        "Registration Errors & Notes": {
-            "required": false
-        }
-    },
+	"version": "22",
+	"metadata": {
+		"Unique Row ID": {
+			"required": true
+		},
+		"Parent EIDR/Row ID": {
+			"required": true
+		},
+		"Mode": {
+			"required": false
+		},
+		"Edit Use": {
+			"required": true
+		},
+		"Color Type": {
+			"required": true
+		},
+		"In 3D": {
+			"required": true
+		},
+		"Edit Class 1": {
+			"required": false
+		},
+		"Edit Class 2": {
+			"required": false
+		},
+		"Edit Class 3": {
+			"required": false
+		},
+		"Made for Region 1": {
+			"required": false
+		},
+		"Made for Region 2": {
+			"required": false
+		},
+		"Made for Region 3": {
+			"required": false
+		},
+		"Edit Details 1": {
+			"required": false
+		},
+		"Edit Details Domain 1": {
+			"required": false
+		},
+		"Structural Type": {
+			"required": true
+		},
+		"Referent Type": {
+			"required": false
+		},
+		"Title": {
+			"required": false
+		},
+		"Title Language": {
+			"required": false
+		},
+		"Title Class": {
+			"required": false
+		},
+		"Version Language 1": {
+			"required": false
+		},
+		"Language Mode 1": {
+			"required": false
+		},
+		"Alternate Title 1": {
+			"required": false
+		},
+		"Alt Title Language 1": {
+			"required": false
+		},
+		"Alt Title Class 1": {
+			"required": false
+		},
+		"Country of Origin 1": {
+			"required": false
+		},
+		"Associated Org 1": {
+			"required": false
+		},
+		"Associated Org Role 1": {
+			"required": false
+		},
+		"Associated Org Party ID 1": {
+			"required": false
+		},
+		"Associated Org 2": {
+			"required": false
+		},
+		"Associated Org Role 2": {
+			"required": false
+		},
+		"Associated Org Party ID 2": {
+			"required": false
+		},
+		"Associated Org 3": {
+			"required": false
+		},
+		"Associated Org Role 3": {
+			"required": false
+		},
+		"Associated Org Party ID 3": {
+			"required": false
+		},
+		"Metadata Authority 1": {
+			"required": false
+		},
+		"Metadata Authority Party ID 1": {
+			"required": false
+		},
+		"Release Date": {
+			"required": true
+		},
+		"Publication Status": {
+			"required": true
+		},
+		"Approx Length": {
+			"required": true
+		},
+		"Registrant": {
+			"required": false
+		},
+		"Director 1": {
+			"required": false
+		},
+		"Director 2": {
+			"required": false
+		},
+		"Actor 1": {
+			"required": false
+		},
+		"Actor 2": {
+			"required": false
+		},
+		"Actor 3": {
+			"required": false
+		},
+		"Actor 4": {
+			"required": false
+		},
+		"Alt ID 1": {
+			"required": false
+		},
+		"Domain 1": {
+			"required": false
+		},
+		"Relation 1": {
+			"required": false
+		},
+		"Alt ID 2": {
+			"required": false
+		},
+		"Domain 2": {
+			"required": false
+		},
+		"Relation 2": {
+			"required": false
+		},
+		"Alt ID 3": {
+			"required": false
+		},
+		"Domain 3": {
+			"required": false
+		},
+		"Relation 3": {
+			"required": false
+		},
+		"ISAN": {
+			"required": false
+		},
+		"ISAN Relation": {
+			"required": false
+		},
+		"Description": {
+			"required": false
+		},
+		"Description Language": {
+			"required": false
+		},
+		"Registrant Extra": {
+			"required": false
+		},
+		"Operator's Notes": {
+			"required": false
+		},
+		"Assigned EIDR ID": {
+			"required": "TBD"
+		},
+		"Registration Errors & Notes": {
+			"required": "TBD"
+		}
+	},
 	"data": {
 		"Unique Row ID": null,
 		"Parent EIDR/Row ID": null,

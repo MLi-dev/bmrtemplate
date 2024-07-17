@@ -5,28 +5,28 @@
 			"required": true
 		},
 		"Mode": {
-			"required": false
+			"required": true
 		},
 		"Structural Type": {
-			"required": false
+			"required": true
 		},
 		"Referent Type": {
-			"required": false
+			"required": true
 		},
 		"Title": {
 			"required": true
 		},
 		"Title Language": {
-			"required": false
+			"required": true
 		},
 		"Title Class": {
 			"required": false
 		},
 		"Original Language 1": {
-			"required": false
+			"required": true
 		},
 		"Language Mode 1": {
-			"required": false
+			"required": true
 		},
 		"Alternate Title 1": {
 			"required": false
@@ -47,7 +47,7 @@
 			"required": false
 		},
 		"Country of Origin 1": {
-			"required": false
+			"required": true
 		},
 		"Associated Org 1": {
 			"required": false
@@ -83,13 +83,13 @@
 			"required": false
 		},
 		"Release Date": {
-			"required": false
+			"required": true
 		},
 		"Publication Status": {
-			"required": false
+			"required": true
 		},
 		"Approx Length": {
-			"required": false
+			"required": true
 		},
 		"Registrant": {
 			"required": false
@@ -164,10 +164,10 @@
 			"required": false
 		},
 		"Assigned EIDR ID": {
-			"required": false
+			"required": "TBD"
 		},
 		"Registration Errors & Notes": {
-			"required": false
+			"required": "TBD"
 		}
 	},
 	"data": {

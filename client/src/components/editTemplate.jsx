@@ -7,10 +7,10 @@ import nonepisodicTemplate from "../assets/nonepisodictemplate.json";
 import excelToXMLMap from "./ExcelToXMLMap";
 
 const getDataRow = (xmlDoc, dataKeys) => {
-	const elements = xmlDoc.getElementsByTagName("BaseObjectData");
+	const baseElements = xmlDoc.getElementsByTagName("SelfDefinedMetadata");
 	let row = [];
-	if (elements.length > 0) {
-		const baseObjectData = elements[0]; // Assuming we're only interested in the first BaseObjectData element
+	if (baseElements.length > 0) {
+		const baseObjectData = baseElements[0]; // Assuming we're only interested in the first BaseObjectData element
 
 		dataKeys.forEach((key) => {
 			const foundElements = baseObjectData.getElementsByTagName(
@@ -65,6 +65,24 @@ const getDataRow = (xmlDoc, dataKeys) => {
 								.getElementsByTagName("md:DisplayName")[0].textContent
 						: "";
 				row.push(value);
+			} else if (key === "Edit Class 1") {
+				value =
+					baseObjectData.getElementsByTagName("EditClass").length > 0
+						? baseObjectData.getElementsByTagName("EditClass")[0].textContent
+						: "";
+				row.push(value);
+			} else if (key === "Edit Class 2") {
+				value =
+					baseObjectData.getElementsByTagName("EditClass").length > 1
+						? baseObjectData.getElementsByTagName("EditClass")[1].textContent
+						: "";
+				row.push(value);
+			} else if (key === "Edit Class 3") {
+				value =
+					baseObjectData.getElementsByTagName("EditClass").length > 2
+						? baseObjectData.getElementsByTagName("EditClass")[2].textContent
+						: "";
+				row.push(value);
 			} else {
 				if (foundElements.length > 0) {
 					// Assuming we only care about the first found element for each key
@@ -78,7 +96,6 @@ const getDataRow = (xmlDoc, dataKeys) => {
 			}
 		});
 	}
-
 	return row;
 };
 

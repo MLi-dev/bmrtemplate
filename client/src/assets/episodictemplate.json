@@ -11,10 +11,10 @@
 			"required": false
 		},
 		"Structural Type": {
-			"required": false
+			"required": true
 		},
 		"Referent Type": {
-			"required": false
+			"required": true
 		},
 		"Title": {
 			"required": true
@@ -86,7 +86,7 @@
 			"required": false
 		},
 		"Release Date": {
-			"required": false
+			"required": true
 		},
 		"End Date": {
 			"required": false
@@ -134,10 +134,10 @@
 			"required": false
 		},
 		"Publication Status": {
-			"required": false
+			"required": true
 		},
 		"Approx Length": {
-			"required": false
+			"required": true
 		},
 		"Registrant": {
 			"required": false
@@ -212,10 +212,10 @@
 			"required": false
 		},
 		"Assigned EIDR ID": {
-			"required": false
+			"required": "TBD"
 		},
 		"Registration Errors & Notes": {
-			"required": false
+			"required": "TBD"
 		}
 	},
 	"data": {
