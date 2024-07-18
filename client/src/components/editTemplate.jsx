@@ -4,7 +4,10 @@ import { saveAs } from "file-saver";
 import editTemplateFormat from "../assets/edittemplate.json";
 import episodicTemplate from "../assets/episodictemplate.json";
 import nonepisodicTemplate from "../assets/nonepisodictemplate.json";
+import unknowntemplate from "../assets/unknowntemplate.json";
 import excelToXMLMap from "./ExcelToXMLMap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDownload } from "@fortawesome/free-solid-svg-icons";
 
 const getDataRow = (xmlDoc, dataKeys) => {
 	const baseElements = xmlDoc.getElementsByTagName("SelfDefinedMetadata");
@@ -81,6 +84,27 @@ const getDataRow = (xmlDoc, dataKeys) => {
 				value =
 					baseObjectData.getElementsByTagName("EditClass").length > 2
 						? baseObjectData.getElementsByTagName("EditClass")[2].textContent
+						: "";
+				row.push(value);
+			} else if (key === "Made for Region 1") {
+				value =
+					baseObjectData.getElementsByTagName("MadeForRegion").length > 0
+						? baseObjectData.getElementsByTagName("MadeForRegion")[0]
+								.textContent
+						: "";
+				row.push(value);
+			} else if (key === "Made for Region 2") {
+				value =
+					baseObjectData.getElementsByTagName("MadeForRegion").length > 1
+						? baseObjectData.getElementsByTagName("MadeForRegion")[1]
+								.textContent
+						: "";
+				row.push(value);
+			} else if (key === "Made for Region 3") {
+				value =
+					baseObjectData.getElementsByTagName("MadeForRegion").length > 2
+						? baseObjectData.getElementsByTagName("MadeForRegion")[2]
+								.textContent
 						: "";
 				row.push(value);
 			} else {
@@ -227,6 +251,47 @@ const EditTemplate = ({ xmlArray, buttonName }) => {
 				new Blob([s2ab(wbout)], { type: "application/octet-stream" }),
 				"NonEpisodic.xlsx"
 			);
+		} else if (type === "Unknown") {
+			const metadataKeys = Object.keys(nonepisodicTemplate.metadata);
+			const metadataRequired = metadataKeys.map((key) => {
+				if (nonepisodicTemplate.metadata[key].required === "TBD") {
+					return "TBD";
+				}
+				return nonepisodicTemplate.metadata[key].required
+					? "required"
+					: "optional";
+			});
+			// rows.push(metadataKeys); // Third row: keys from metadata
+			rows.push(metadataRequired); // Second row: required or optional
+
+			// Data keys and their values
+			const dataKeys = Object.keys(nonepisodicTemplate.data);
+			const dataValues = dataKeys.map(
+				(key) => nonepisodicTemplate.data[key] || ""
+			); // Replace null with 'null' string
+			rows.push(dataKeys); // Third row: keys from data
+			xmlArray.forEach((xml) => {
+				rows.push(getDataRow(xml, dataKeys)); // Fourth row: values from data
+			});
+			// Generate Excel file
+			const wb = XLSX.utils.book_new();
+			const ws = XLSX.utils.aoa_to_sheet(rows);
+			XLSX.utils.book_append_sheet(wb, ws, "Unknown"); // Set sheet name to "Episodic"
+			const wbout = XLSX.write(wb, { bookType: "xlsx", type: "binary" });
+			function s2ab(s) {
+				const buf = new ArrayBuffer(s.length);
+				const view = new Uint8Array(buf);
+				for (let i = 0; i < s.length; i++) {
+					view[i] = s.charCodeAt(i) & 0xff;
+				}
+				return buf;
+			}
+
+			// Save to file
+			saveAs(
+				new Blob([s2ab(wbout)], { type: "application/octet-stream" }),
+				"Unknown.xlsx"
+			);
 		}
 	};
 
@@ -236,12 +301,15 @@ const EditTemplate = ({ xmlArray, buttonName }) => {
 	};
 
 	return (
-		<div>
-			<button
-				className='text-white bg-black rounded-lg shadow-lg p-2 mt-4 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110'
-				onClick={() => handleButtonClick(buttonName)}
-			>
-				Generate {buttonName} Excel
+		<div className='relative flex items-center'>
+			<button onClick={() => handleButtonClick(buttonName)} className='group'>
+				<FontAwesomeIcon
+					icon={faDownload}
+					className='text-gray-500 hover:text-gray-700'
+				/>
+				<span className='absolute left-1/2 transform -translate-x-1/2 -bottom-8 w-auto p-2 bg-black text-white text-xs rounded-md scale-0 group-hover:scale-100 transition-transform duration-150 ease-in-out'>
+					Generate {buttonName}
+				</span>
 			</button>
 		</div>
 	);
