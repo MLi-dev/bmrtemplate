@@ -4,65 +4,29 @@
 		"Unique Row ID": {
 			"required": true
 		},
-		"Parent EIDR/Row ID": {
-			"required": true
-		},
 		"Mode": {
-			"required": false
-		},
-		"Edit Use": {
 			"required": true
-		},
-		"Color Type": {
-			"required": true
-		},
-		"In 3D": {
-			"required": true
-		},
-		"Edit Class 1": {
-			"required": false
-		},
-		"Edit Class 2": {
-			"required": false
-		},
-		"Edit Class 3": {
-			"required": false
-		},
-		"Made for Region 1": {
-			"required": false
-		},
-		"Made for Region 2": {
-			"required": false
-		},
-		"Made for Region 3": {
-			"required": false
-		},
-		"Edit Details 1": {
-			"required": false
-		},
-		"Edit Details Domain 1": {
-			"required": false
 		},
 		"Structural Type": {
 			"required": true
 		},
 		"Referent Type": {
-			"required": false
+			"required": true
 		},
 		"Title": {
-			"required": false
+			"required": true
 		},
 		"Title Language": {
-			"required": false
+			"required": true
 		},
 		"Title Class": {
 			"required": false
 		},
-		"Version Language 1": {
-			"required": false
+		"Original Language 1": {
+			"required": true
 		},
 		"Language Mode 1": {
-			"required": false
+			"required": true
 		},
 		"Alternate Title 1": {
 			"required": false
@@ -73,8 +37,17 @@
 		"Alt Title Class 1": {
 			"required": false
 		},
-		"Country of Origin 1": {
+		"Alternate Title 2": {
 			"required": false
+		},
+		"Alt Title Language 2": {
+			"required": false
+		},
+		"Alt Title Class 2": {
+			"required": false
+		},
+		"Country of Origin 1": {
+			"required": true
 		},
 		"Associated Org 1": {
 			"required": false
@@ -166,6 +139,12 @@
 		"Relation 3": {
 			"required": false
 		},
+		"IMDb": {
+			"required": false
+		},
+		"IMDb Relation": {
+			"required": false
+		},
 		"ISAN": {
 			"required": false
 		},
@@ -193,29 +172,20 @@
 	},
 	"data": {
 		"Unique Row ID": "",
-		"Parent EIDR/Row ID": "",
 		"Mode": "",
-		"Edit Use": "",
-		"Color Type": "",
-		"In 3D": "",
-		"Edit Class 1": "",
-		"Edit Class 2": "",
-		"Edit Class 3": "",
-		"Made for Region 1": "",
-		"Made for Region 2": "",
-		"Made for Region 3": "",
-		"Edit Details 1": "",
-		"Edit Details Domain 1": "",
 		"Structural Type": "",
 		"Referent Type": "",
 		"Title": "",
 		"Title Language": "",
 		"Title Class": "",
-		"Version Language 1": "",
+		"Original Language 1": "",
 		"Language Mode 1": "",
 		"Alternate Title 1": "",
 		"Alt Title Language 1": "",
 		"Alt Title Class 1": "",
+		"Alternate Title 2": "",
+		"Alt Title Language 2": "",
+		"Alt Title Class 2": "",
 		"Country of Origin 1": "",
 		"Associated Org 1": "",
 		"Associated Org Role 1": "",
@@ -247,6 +217,8 @@
 		"Alt ID 3": "",
 		"Domain 3": "",
 		"Relation 3": "",
+		"IMDb": "",
+		"IMDb Relation": "",
 		"ISAN": "",
 		"ISAN Relation": "",
 		"Description": "",

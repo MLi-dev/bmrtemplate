@@ -17,12 +17,15 @@ const App = () => {
 	const [editEIDRList, setEditEIDRList] = useState([]);
 	const [nonEpisodicList, setNonEpisodicList] = useState([]);
 	const [episodicList, setEpisodicList] = useState([]);
+	const [unknownList, setUnknownList] = useState([]);
 	const [editXML, setEditXML] = useState([]);
 	const [episodicXML, setEpisodicXML] = useState([]);
 	const [nonEpisodicXML, setNonEpisodicXML] = useState([]);
+	const [unknownXML, setUnknownXML] = useState([]);
 	const [hasEditFormat, setHasEditFormat] = useState(false);
 	const [hasEpisodic, setHasEpisodic] = useState(false);
 	const [hasNonEpisodic, setHasNonEpisodic] = useState(false);
+	const [hasUnknown, setHasUnknown] = useState(false);
 
 	const callAPI = async (query, requestOptions, eidr_id) => {
 		const response = await fetch(query, requestOptions);
@@ -42,6 +45,10 @@ const App = () => {
 			setNonEpisodicXML((prev) => [...prev, xmlDoc]);
 			setHasNonEpisodic(true);
 			setNonEpisodicList((prev) => [...prev, eidr_id]);
+		} else {
+			setUnknownXML((prev) => [...prev, xmlDoc]);
+			setHasUnknown(true);
+			setUnknownList((prev) => [...prev, eidr_id]);
 		}
 	};
 
@@ -81,7 +88,7 @@ const App = () => {
 	return (
 		<div className='min-h-screen w-full md:w-4/5 lg:w-4/4 xl:w-2/3 bg-gradient-to-r from-gray-400 to-green-700 py-6 flex flex-col justify-center sm:py-12 mx-auto'>
 			<h1 className='text-4xl font-bold text-center mb-4'>
-				Entertainment Identifier Registry
+				BMR Template Generator
 			</h1>
 			<APIForm
 				inputs={inputs}
@@ -101,18 +108,39 @@ const App = () => {
 							className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
 						>
 							Episodic
+							{hasEpisodic && (
+								<EditTemplate xmlArray={episodicXML} buttonName={"Episodic"} />
+							)}
 						</th>
 						<th
 							scope='col'
 							className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
 						>
 							NonEpisodic
+							{hasNonEpisodic && (
+								<EditTemplate
+									xmlArray={nonEpisodicXML}
+									buttonName={"NonEpisodic"}
+								/>
+							)}
 						</th>
 						<th
 							scope='col'
 							className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
 						>
 							Edit
+							{hasEditFormat && (
+								<EditTemplate xmlArray={editXML} buttonName={"Edit"} />
+							)}
+						</th>
+						<th
+							scope='col'
+							className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+						>
+							Unknown
+							{hasUnknown && (
+								<EditTemplate xmlArray={unknownXML} buttonName={"Unknown"} />
+							)}
 						</th>
 					</tr>
 				</thead>
@@ -122,26 +150,18 @@ const App = () => {
 						<td className='px-6 py-4 whitespace-nowrap'>
 							{episodicList?.length > 0 &&
 								episodicList.map((eidr_id) => <div>{eidr_id}</div>)}
-							{hasEpisodic && (
-								<EditTemplate xmlArray={episodicXML} buttonName={"Episodic"} />
-							)}
 						</td>
 						<td className='px-6 py-4 whitespace-nowrap'>
 							{nonEpisodicList?.length > 0 &&
 								nonEpisodicList.map((eidr_id) => <div>{eidr_id}</div>)}
-							{hasNonEpisodic && (
-								<EditTemplate
-									xmlArray={nonEpisodicXML}
-									buttonName={"NonEpisodic"}
-								/>
-							)}
 						</td>
 						<td className='px-6 py-4 whitespace-nowrap'>
 							{editEIDRList?.length > 0 &&
 								editEIDRList.map((eidr_id) => <div>{eidr_id}</div>)}
-							{hasEditFormat && (
-								<EditTemplate xmlArray={editXML} buttonName={"Edit"} />
-							)}
+						</td>
+						<td className='px-6 py-4 whitespace-nowrap'>
+							{unknownList?.length > 0 &&
+								unknownList.map((eidr_id) => <div>{eidr_id}</div>)}
 						</td>
 					</tr>
 				</tbody>
