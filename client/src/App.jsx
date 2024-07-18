@@ -15,6 +15,7 @@ const App = () => {
 
 	const [searchType, setSearchType] = useState("");
 	const [editEIDRList, setEditEIDRList] = useState([]);
+	const [eidrErrorList, setEidrErrorList] = useState([]);
 	const [nonEpisodicList, setNonEpisodicList] = useState([]);
 	const [episodicList, setEpisodicList] = useState([]);
 	const [unknownList, setUnknownList] = useState([]);
@@ -52,7 +53,7 @@ const App = () => {
 		}
 	};
 
-	const makeQuery = () => {
+	const makeQuery = (eidrId) => {
 		let requestOptions = {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
@@ -63,16 +64,19 @@ const App = () => {
 			query = `${API_URL}/api/query`;
 			requestOptions = {
 				...requestOptions,
-				body: JSON.stringify({ title: { words: inputs.title } }),
+				body: JSON.stringify({ title: { words: eidrId } }),
 			};
 		} else {
 			query = `${API_URL}/api/resolve`;
 			requestOptions = {
 				...requestOptions,
-				body: JSON.stringify({ eidr_id: inputs.eidr_id }),
+				body: JSON.stringify({ eidr_id: eidrId }),
 			};
 		}
-		callAPI(query, requestOptions, inputs.eidr_id).catch(console.error);
+		callAPI(query, requestOptions, eidrId).catch((error) => {
+			console.error("Error:", error);
+			setEidrErrorList((prev) => [...prev, eidrId]);
+		});
 	};
 	const reset = () => {
 		setInputs({
@@ -81,8 +85,12 @@ const App = () => {
 		});
 	};
 	const submitForm = () => {
+		const inputsArr = inputs?.eidr_id?.split(",\n");
+		console.log(inputsArr);
 		setSearchType("byEidrId");
-		makeQuery();
+		for (let i = 0; i < inputsArr.length; i++) {
+			makeQuery(inputsArr[i]);
+		}
 	};
 
 	return (
@@ -107,7 +115,7 @@ const App = () => {
 							scope='col'
 							className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
 						>
-							Episodic
+							Episodic: {episodicList?.length}
 							{hasEpisodic && (
 								<EditTemplate xmlArray={episodicXML} buttonName={"Episodic"} />
 							)}
@@ -116,7 +124,7 @@ const App = () => {
 							scope='col'
 							className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
 						>
-							NonEpisodic
+							NonEpisodic: {nonEpisodicList?.length}
 							{hasNonEpisodic && (
 								<EditTemplate
 									xmlArray={nonEpisodicXML}
@@ -128,7 +136,7 @@ const App = () => {
 							scope='col'
 							className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
 						>
-							Edit
+							Edit: {editEIDRList?.length}
 							{hasEditFormat && (
 								<EditTemplate xmlArray={editXML} buttonName={"Edit"} />
 							)}
@@ -137,10 +145,13 @@ const App = () => {
 							scope='col'
 							className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
 						>
-							Unknown
-							{hasUnknown && (
-								<EditTemplate xmlArray={unknownXML} buttonName={"Unknown"} />
-							)}
+							Unknown: {unknownList?.length}
+						</th>
+						<th
+							scope='col'
+							className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+						>
+							Errors: {eidrErrorList?.length}
 						</th>
 					</tr>
 				</thead>
@@ -162,6 +173,10 @@ const App = () => {
 						<td className='px-6 py-4 whitespace-nowrap'>
 							{unknownList?.length > 0 &&
 								unknownList.map((eidr_id) => <div>{eidr_id}</div>)}
+						</td>
+						<td className='px-6 py-4 whitespace-nowrap'>
+							{eidrErrorList?.length > 0 &&
+								eidrErrorList.map((eidr_id) => <div>{eidr_id}</div>)}
 						</td>
 					</tr>
 				</tbody>
