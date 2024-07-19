@@ -3,6 +3,7 @@ import "./App.css";
 import APIForm from "./components/APIForm";
 import EditTemplate from "./components/editTemplate";
 import determineFormatType from "./utils/FormatTypeUtil";
+import GeneratedTable from "./components/GeneratedTable";
 
 const App = () => {
 	const [inputs, setInputs] = useState({
@@ -27,6 +28,42 @@ const App = () => {
 	const [hasEpisodic, setHasEpisodic] = useState(false);
 	const [hasNonEpisodic, setHasNonEpisodic] = useState(false);
 	const [hasUnknown, setHasUnknown] = useState(false);
+	const dataConfig = {
+		sections: [
+			{
+				name: "Episodic",
+				list: episodicList,
+				hasTemplate: hasEpisodic,
+				xmlArray: episodicXML,
+				buttonName: "Episodic",
+			},
+			{
+				name: "NonEpisodic",
+				list: nonEpisodicList,
+				hasTemplate: hasNonEpisodic,
+				xmlArray: nonEpisodicXML,
+				buttonName: "NonEpisodic",
+			},
+			{
+				name: "Edit",
+				list: editEIDRList,
+				hasTemplate: hasEditFormat,
+				xmlArray: editXML,
+				buttonName: "Edit",
+			},
+			{
+				name: "Unknown",
+				list: unknownList,
+				hasTemplate: hasUnknown,
+				xmlArray: unknownXML,
+				buttonName: "Unknown",
+			},
+			{
+				name: "Error",
+				list: eidrErrorList,
+			},
+		],
+	};
 
 	const callAPI = async (query, requestOptions, eidr_id) => {
 		const response = await fetch(query, requestOptions);
@@ -108,80 +145,7 @@ const App = () => {
 				}
 				onSubmit={submitForm}
 			/>
-			<table className='min-w-full divide-y divide-gray-200 mt-6'>
-				<thead className='bg-gray-50'>
-					<tr>
-						<th
-							scope='col'
-							className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-						>
-							Episodic: {episodicList?.length}
-							{hasEpisodic && (
-								<EditTemplate xmlArray={episodicXML} buttonName={"Episodic"} />
-							)}
-						</th>
-						<th
-							scope='col'
-							className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-						>
-							NonEpisodic: {nonEpisodicList?.length}
-							{hasNonEpisodic && (
-								<EditTemplate
-									xmlArray={nonEpisodicXML}
-									buttonName={"NonEpisodic"}
-								/>
-							)}
-						</th>
-						<th
-							scope='col'
-							className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-						>
-							Edit: {editEIDRList?.length}
-							{hasEditFormat && (
-								<EditTemplate xmlArray={editXML} buttonName={"Edit"} />
-							)}
-						</th>
-						<th
-							scope='col'
-							className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-						>
-							Unknown: {unknownList?.length}
-						</th>
-						<th
-							scope='col'
-							className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
-						>
-							Errors: {eidrErrorList?.length}
-						</th>
-					</tr>
-				</thead>
-				<tbody className='bg-white divide-y divide-gray-200'>
-					{/* Example Row - Repeat or dynamically generate rows based on your data */}
-					<tr>
-						<td className='px-6 py-4 whitespace-nowrap'>
-							{episodicList?.length > 0 &&
-								episodicList.map((eidr_id) => <div>{eidr_id}</div>)}
-						</td>
-						<td className='px-6 py-4 whitespace-nowrap'>
-							{nonEpisodicList?.length > 0 &&
-								nonEpisodicList.map((eidr_id) => <div>{eidr_id}</div>)}
-						</td>
-						<td className='px-6 py-4 whitespace-nowrap'>
-							{editEIDRList?.length > 0 &&
-								editEIDRList.map((eidr_id) => <div>{eidr_id}</div>)}
-						</td>
-						<td className='px-6 py-4 whitespace-nowrap'>
-							{unknownList?.length > 0 &&
-								unknownList.map((eidr_id) => <div>{eidr_id}</div>)}
-						</td>
-						<td className='px-6 py-4 whitespace-nowrap'>
-							{eidrErrorList?.length > 0 &&
-								eidrErrorList.map((eidr_id) => <div>{eidr_id}</div>)}
-						</td>
-					</tr>
-				</tbody>
-			</table>
-
+			<GeneratedTable dataConfig={dataConfig} />
 			<br></br>
 		</div>
 	);
