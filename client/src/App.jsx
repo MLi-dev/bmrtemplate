@@ -136,17 +136,21 @@ const App = () => {
 			<h1 className='text-4xl font-bold text-center mb-4'>
 				BMR Template Generator
 			</h1>
-			<APIForm
-				inputs={inputs}
-				handleChange={(e) =>
-					setInputs((prevState) => ({
-						...prevState,
-						[e.target.name]: e.target.value.trim(),
-					}))
-				}
-				onSubmit={submitForm}
-			/>
-			<APIFormFile setSearchType={setSearchType} makeQuery={makeQuery} />
+			<h2 className='text-2xl font-bold mb-10'>Enter the information:</h2>
+			<div className='flex'>
+				<APIForm
+					inputs={inputs}
+					handleChange={(e) =>
+						setInputs((prevState) => ({
+							...prevState,
+							[e.target.name]: e.target.value.trim(),
+						}))
+					}
+					onSubmit={submitForm}
+				/>
+				<APIFormFile setSearchType={setSearchType} makeQuery={makeQuery} />
+			</div>
+
 			<GeneratedTable dataConfig={dataConfig} />
 			<br></br>
 		</div>

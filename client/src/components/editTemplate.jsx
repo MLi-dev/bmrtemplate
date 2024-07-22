@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import editTemplateFormat from "../assets/edittemplate.json";
@@ -9,7 +9,7 @@ import excelToXMLMap from "./ExcelToXMLMap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
 
-const getDataRow = (xmlDoc, dataKeys) => {
+const getDataRow = (xmlDoc, dataKeys, idx) => {
 	const baseElements = xmlDoc.getElementsByTagName("SelfDefinedMetadata");
 	let row = [];
 	if (baseElements.length > 0) {
@@ -20,7 +20,9 @@ const getDataRow = (xmlDoc, dataKeys) => {
 				excelToXMLMap[key] || key
 			);
 			let value = "";
-			if (key === "Director 1") {
+			if (key === "Unique Row ID") {
+				row.push(idx + 1);
+			} else if (key === "Director 1") {
 				value =
 					baseObjectData.getElementsByTagName("Director").length > 0
 						? baseObjectData
@@ -122,187 +124,184 @@ const getDataRow = (xmlDoc, dataKeys) => {
 	}
 	return row;
 };
+const generateExcelFromEditTemplate = (type, xmlArray) => {
+	// Prepare Excel data
+	const rows = [];
+	rows.push(["version:", "22"]); // Assuming version is static as per the requirement
+	if (type === "Edit") {
+		const metadataKeys = Object.keys(editTemplateFormat.metadata);
+		const metadataRequired = metadataKeys.map((key) => {
+			if (editTemplateFormat.metadata[key].required === "TBD") {
+				return "TBD";
+			}
+			return editTemplateFormat.metadata[key].required
+				? "required"
+				: "optional";
+		});
+		// rows.push(metadataKeys); // Third row: keys from metadata
+		rows.push(metadataRequired); // Second row: required or optional
+
+		// Data keys and their values
+		const dataKeys = Object.keys(editTemplateFormat.data);
+		const dataValues = dataKeys.map(
+			(key) => editTemplateFormat.data[key] || ""
+		); // Replace null with 'null' string
+		rows.push(dataKeys); // Third row: keys from data
+		xmlArray.forEach((xml, idx) => {
+			rows.push(getDataRow(xml, dataKeys, idx)); // Fourth row: values from data
+		});
+		// Generate Excel file
+		const wb = XLSX.utils.book_new();
+		const ws = XLSX.utils.aoa_to_sheet(rows);
+		XLSX.utils.book_append_sheet(wb, ws, "Edits"); // Set sheet name to "Edits"
+		const wbout = XLSX.write(wb, { bookType: "xlsx", type: "binary" });
+		function s2ab(s) {
+			const buf = new ArrayBuffer(s.length);
+			const view = new Uint8Array(buf);
+			for (let i = 0; i < s.length; i++) {
+				view[i] = s.charCodeAt(i) & 0xff;
+			}
+			return buf;
+		}
+
+		// Save to file
+		saveAs(
+			new Blob([s2ab(wbout)], { type: "application/octet-stream" }),
+			"editTemplate.xlsx"
+		);
+	} else if (type === "Episodic") {
+		const metadataKeys = Object.keys(episodicTemplate.metadata);
+		const metadataRequired = metadataKeys.map((key) => {
+			if (episodicTemplate.metadata[key].required === "TBD") {
+				return "TBD";
+			}
+			return episodicTemplate.metadata[key].required ? "required" : "optional";
+		});
+		// rows.push(metadataKeys); // Third row: keys from metadata
+		rows.push(metadataRequired); // Second row: required or optional
+
+		// Data keys and their values
+		const dataKeys = Object.keys(episodicTemplate.data);
+		const dataValues = dataKeys.map((key) => episodicTemplate.data[key] || ""); // Replace null with 'null' string
+		rows.push(dataKeys); // Third row: keys from data
+		xmlArray.forEach((xml, idx) => {
+			rows.push(getDataRow(xml, dataKeys, idx)); // Fourth row: values from data
+		});
+		// Generate Excel file
+		const wb = XLSX.utils.book_new();
+		const ws = XLSX.utils.aoa_to_sheet(rows);
+		XLSX.utils.book_append_sheet(wb, ws, "Episodic"); // Set sheet name to "Episodic"
+		const wbout = XLSX.write(wb, { bookType: "xlsx", type: "binary" });
+		function s2ab(s) {
+			const buf = new ArrayBuffer(s.length);
+			const view = new Uint8Array(buf);
+			for (let i = 0; i < s.length; i++) {
+				view[i] = s.charCodeAt(i) & 0xff;
+			}
+			return buf;
+		}
+
+		// Save to file
+		saveAs(
+			new Blob([s2ab(wbout)], { type: "application/octet-stream" }),
+			"Episodic.xlsx"
+		);
+	} else if (type === "NonEpisodic") {
+		const metadataKeys = Object.keys(nonepisodicTemplate.metadata);
+		const metadataRequired = metadataKeys.map((key) => {
+			if (nonepisodicTemplate.metadata[key].required === "TBD") {
+				return "TBD";
+			}
+			return nonepisodicTemplate.metadata[key].required
+				? "required"
+				: "optional";
+		});
+		// rows.push(metadataKeys); // Third row: keys from metadata
+		rows.push(metadataRequired); // Second row: required or optional
+
+		// Data keys and their values
+		const dataKeys = Object.keys(nonepisodicTemplate.data);
+		const dataValues = dataKeys.map(
+			(key) => nonepisodicTemplate.data[key] || ""
+		); // Replace null with 'null' string
+		rows.push(dataKeys); // Third row: keys from data
+		xmlArray.forEach((xml, idx) => {
+			rows.push(getDataRow(xml, dataKeys, idx)); // Fourth row: values from data
+		});
+		// Generate Excel file
+		const wb = XLSX.utils.book_new();
+		const ws = XLSX.utils.aoa_to_sheet(rows);
+		XLSX.utils.book_append_sheet(wb, ws, "NonEpisodic"); // Set sheet name to "Episodic"
+		const wbout = XLSX.write(wb, { bookType: "xlsx", type: "binary" });
+		function s2ab(s) {
+			const buf = new ArrayBuffer(s.length);
+			const view = new Uint8Array(buf);
+			for (let i = 0; i < s.length; i++) {
+				view[i] = s.charCodeAt(i) & 0xff;
+			}
+			return buf;
+		}
+
+		// Save to file
+		saveAs(
+			new Blob([s2ab(wbout)], { type: "application/octet-stream" }),
+			"NonEpisodic.xlsx"
+		);
+	} else if (type === "Unknown") {
+		const metadataKeys = Object.keys(nonepisodicTemplate.metadata);
+		const metadataRequired = metadataKeys.map((key) => {
+			if (nonepisodicTemplate.metadata[key].required === "TBD") {
+				return "TBD";
+			}
+			return nonepisodicTemplate.metadata[key].required
+				? "required"
+				: "optional";
+		});
+		// rows.push(metadataKeys); // Third row: keys from metadata
+		rows.push(metadataRequired); // Second row: required or optional
+
+		// Data keys and their values
+		const dataKeys = Object.keys(nonepisodicTemplate.data);
+		const dataValues = dataKeys.map(
+			(key) => nonepisodicTemplate.data[key] || ""
+		); // Replace null with 'null' string
+		rows.push(dataKeys); // Third row: keys from data
+		xmlArray.forEach((xml, idx) => {
+			rows.push(getDataRow(xml, dataKeys, idx)); // Fourth row: values from data
+		});
+		// Generate Excel file
+		const wb = XLSX.utils.book_new();
+		const ws = XLSX.utils.aoa_to_sheet(rows);
+		XLSX.utils.book_append_sheet(wb, ws, "Unknown"); // Set sheet name to "Episodic"
+		const wbout = XLSX.write(wb, { bookType: "xlsx", type: "binary" });
+		function s2ab(s) {
+			const buf = new ArrayBuffer(s.length);
+			const view = new Uint8Array(buf);
+			for (let i = 0; i < s.length; i++) {
+				view[i] = s.charCodeAt(i) & 0xff;
+			}
+			return buf;
+		}
+
+		// Save to file
+		saveAs(
+			new Blob([s2ab(wbout)], { type: "application/octet-stream" }),
+			"Unknown.xlsx"
+		);
+	}
+};
+
+const handleButtonClick = (type, xmlArray) => {
+	generateExcelFromEditTemplate(type, xmlArray);
+};
 
 const EditTemplate = ({ xmlArray, buttonName }) => {
-	const generateExcelFromEditTemplate = (type) => {
-		// Prepare Excel data
-		const rows = [];
-		rows.push(["version:", "22"]); // Assuming version is static as per the requirement
-		if (type === "Edit") {
-			const metadataKeys = Object.keys(editTemplateFormat.metadata);
-			const metadataRequired = metadataKeys.map((key) => {
-				if (editTemplateFormat.metadata[key].required === "TBD") {
-					return "TBD";
-				}
-				return editTemplateFormat.metadata[key].required
-					? "required"
-					: "optional";
-			});
-			// rows.push(metadataKeys); // Third row: keys from metadata
-			rows.push(metadataRequired); // Second row: required or optional
-
-			// Data keys and their values
-			const dataKeys = Object.keys(editTemplateFormat.data);
-			const dataValues = dataKeys.map(
-				(key) => editTemplateFormat.data[key] || ""
-			); // Replace null with 'null' string
-			rows.push(dataKeys); // Third row: keys from data
-			xmlArray.forEach((xml) => {
-				rows.push(getDataRow(xml, dataKeys)); // Fourth row: values from data
-			});
-			// Generate Excel file
-			const wb = XLSX.utils.book_new();
-			const ws = XLSX.utils.aoa_to_sheet(rows);
-			XLSX.utils.book_append_sheet(wb, ws, "Edits"); // Set sheet name to "Edits"
-			const wbout = XLSX.write(wb, { bookType: "xlsx", type: "binary" });
-			function s2ab(s) {
-				const buf = new ArrayBuffer(s.length);
-				const view = new Uint8Array(buf);
-				for (let i = 0; i < s.length; i++) {
-					view[i] = s.charCodeAt(i) & 0xff;
-				}
-				return buf;
-			}
-
-			// Save to file
-			saveAs(
-				new Blob([s2ab(wbout)], { type: "application/octet-stream" }),
-				"editTemplate.xlsx"
-			);
-		} else if (type === "Episodic") {
-			const metadataKeys = Object.keys(episodicTemplate.metadata);
-			const metadataRequired = metadataKeys.map((key) => {
-				if (episodicTemplate.metadata[key].required === "TBD") {
-					return "TBD";
-				}
-				return episodicTemplate.metadata[key].required
-					? "required"
-					: "optional";
-			});
-			// rows.push(metadataKeys); // Third row: keys from metadata
-			rows.push(metadataRequired); // Second row: required or optional
-
-			// Data keys and their values
-			const dataKeys = Object.keys(episodicTemplate.data);
-			const dataValues = dataKeys.map(
-				(key) => episodicTemplate.data[key] || ""
-			); // Replace null with 'null' string
-			rows.push(dataKeys); // Third row: keys from data
-			xmlArray.forEach((xml) => {
-				rows.push(getDataRow(xml, dataKeys)); // Fourth row: values from data
-			});
-			// Generate Excel file
-			const wb = XLSX.utils.book_new();
-			const ws = XLSX.utils.aoa_to_sheet(rows);
-			XLSX.utils.book_append_sheet(wb, ws, "Episodic"); // Set sheet name to "Episodic"
-			const wbout = XLSX.write(wb, { bookType: "xlsx", type: "binary" });
-			function s2ab(s) {
-				const buf = new ArrayBuffer(s.length);
-				const view = new Uint8Array(buf);
-				for (let i = 0; i < s.length; i++) {
-					view[i] = s.charCodeAt(i) & 0xff;
-				}
-				return buf;
-			}
-
-			// Save to file
-			saveAs(
-				new Blob([s2ab(wbout)], { type: "application/octet-stream" }),
-				"Episodic.xlsx"
-			);
-		} else if (type === "NonEpisodic") {
-			const metadataKeys = Object.keys(nonepisodicTemplate.metadata);
-			const metadataRequired = metadataKeys.map((key) => {
-				if (nonepisodicTemplate.metadata[key].required === "TBD") {
-					return "TBD";
-				}
-				return nonepisodicTemplate.metadata[key].required
-					? "required"
-					: "optional";
-			});
-			// rows.push(metadataKeys); // Third row: keys from metadata
-			rows.push(metadataRequired); // Second row: required or optional
-
-			// Data keys and their values
-			const dataKeys = Object.keys(nonepisodicTemplate.data);
-			const dataValues = dataKeys.map(
-				(key) => nonepisodicTemplate.data[key] || ""
-			); // Replace null with 'null' string
-			rows.push(dataKeys); // Third row: keys from data
-			xmlArray.forEach((xml) => {
-				rows.push(getDataRow(xml, dataKeys)); // Fourth row: values from data
-			});
-			// Generate Excel file
-			const wb = XLSX.utils.book_new();
-			const ws = XLSX.utils.aoa_to_sheet(rows);
-			XLSX.utils.book_append_sheet(wb, ws, "NonEpisodic"); // Set sheet name to "Episodic"
-			const wbout = XLSX.write(wb, { bookType: "xlsx", type: "binary" });
-			function s2ab(s) {
-				const buf = new ArrayBuffer(s.length);
-				const view = new Uint8Array(buf);
-				for (let i = 0; i < s.length; i++) {
-					view[i] = s.charCodeAt(i) & 0xff;
-				}
-				return buf;
-			}
-
-			// Save to file
-			saveAs(
-				new Blob([s2ab(wbout)], { type: "application/octet-stream" }),
-				"NonEpisodic.xlsx"
-			);
-		} else if (type === "Unknown") {
-			const metadataKeys = Object.keys(nonepisodicTemplate.metadata);
-			const metadataRequired = metadataKeys.map((key) => {
-				if (nonepisodicTemplate.metadata[key].required === "TBD") {
-					return "TBD";
-				}
-				return nonepisodicTemplate.metadata[key].required
-					? "required"
-					: "optional";
-			});
-			// rows.push(metadataKeys); // Third row: keys from metadata
-			rows.push(metadataRequired); // Second row: required or optional
-
-			// Data keys and their values
-			const dataKeys = Object.keys(nonepisodicTemplate.data);
-			const dataValues = dataKeys.map(
-				(key) => nonepisodicTemplate.data[key] || ""
-			); // Replace null with 'null' string
-			rows.push(dataKeys); // Third row: keys from data
-			xmlArray.forEach((xml) => {
-				rows.push(getDataRow(xml, dataKeys)); // Fourth row: values from data
-			});
-			// Generate Excel file
-			const wb = XLSX.utils.book_new();
-			const ws = XLSX.utils.aoa_to_sheet(rows);
-			XLSX.utils.book_append_sheet(wb, ws, "Unknown"); // Set sheet name to "Episodic"
-			const wbout = XLSX.write(wb, { bookType: "xlsx", type: "binary" });
-			function s2ab(s) {
-				const buf = new ArrayBuffer(s.length);
-				const view = new Uint8Array(buf);
-				for (let i = 0; i < s.length; i++) {
-					view[i] = s.charCodeAt(i) & 0xff;
-				}
-				return buf;
-			}
-
-			// Save to file
-			saveAs(
-				new Blob([s2ab(wbout)], { type: "application/octet-stream" }),
-				"Unknown.xlsx"
-			);
-		}
-	};
-
-	// Example usage with a button click
-	const handleButtonClick = (type) => {
-		generateExcelFromEditTemplate(type);
-	};
-
 	return (
 		<div className='relative flex items-center'>
-			<button onClick={() => handleButtonClick(buttonName)} className='group'>
+			<button
+				onClick={() => handleButtonClick(buttonName, xmlArray)}
+				className='group'
+			>
 				<FontAwesomeIcon
 					icon={faDownload}
 					className='text-gray-500 hover:text-gray-700'

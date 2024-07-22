@@ -59,7 +59,7 @@ const excelToXMLMap = {
 	"Associated Org Party ID 3": "AssociatedOrgPartyID3",
 	"Metadata Authority 1": "MetadataAuthority1",
 	"Metadata Authority Party ID 1": "MetadataAuthorityPartyID1",
-	"Publication Status": "PublicationStatus",
+	"Publication Status": "Status",
 	"Approx Length": "ApproximateLength",
 	//Extra Keys in Episodic below
 	Mode: "Mode",

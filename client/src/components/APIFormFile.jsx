@@ -1,15 +1,12 @@
 import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUpload } from "@fortawesome/free-solid-svg-icons";
 function APIFormFile({ setSearchType, makeQuery }) {
 	// State to store the file content
 	const [file, setFile] = useState(null);
 
 	const handleFileChange = (event) => {
 		setFile(event.target.files[0]);
-	};
-
-	// Process file content (example usage)
-	const handleSubmit = () => {
-		console.log(file); // Example: log to console or send to an API
 	};
 
 	const submitForm = () => {
@@ -29,17 +26,22 @@ function APIFormFile({ setSearchType, makeQuery }) {
 	};
 
 	return (
-		<div className='flex flex-col items-center justify-center p-4 space-y-4 bg-gray-50 rounded-lg shadow mt-5'>
-			<input
-				type='file'
-				accept='.txt'
-				onChange={handleFileChange}
-				className='file:mr-4 file:py-2 file:px-4
-        file:rounded-full file:border-black-700
-        file:text-sm file:font-semibold
-        file:text-black-700
-        hover:file:bg-blue-100 hover:file:cursor-pointer'
-			/>
+		<div className='flex flex-col items-center justify-center'>
+			<label className='text-xl font-bold mr-2 bg-gray-300 text-lg rounded-lg mb-2'>
+				Upload a file
+			</label>
+			<div className='flex items-center bg-white py-2 shadow-md rounded-lg'>
+				<input
+					type='file'
+					accept='.txt'
+					onChange={handleFileChange}
+					className='file:mr-4 file:py-2 file:px-4
+    file:rounded-full file:border file:border-white
+    file:text-sm file:font-semibold
+    file:text-black-700
+    hover:file:bg-blue-100 hover:file:cursor-pointer'
+				/>
+			</div>
 			<button
 				type='submit'
 				onClick={submitForm}
@@ -47,7 +49,6 @@ function APIFormFile({ setSearchType, makeQuery }) {
 			>
 				Generate from File
 			</button>
-			{/* Display file content or process it as needed */}
 		</div>
 	);
 }
