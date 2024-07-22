@@ -6,7 +6,6 @@ const APIForm = ({ inputs, handleChange, onSubmit }) => {
 	];
 	return (
 		<div className='max-w-screen-xl mx-auto px-8 text-center font-poppins'>
-			<h2 className='text-2xl font-bold mb-10'>Enter the information:</h2>
 			<form className='flex justify-between items-stretch relative p-4 flex-wrap'>
 				{inputs &&
 					Object.entries(inputs).map(([category, value], index) => (

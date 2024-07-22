@@ -4,6 +4,7 @@ import APIForm from "./components/APIForm";
 import EditTemplate from "./components/editTemplate";
 import determineFormatType from "./utils/FormatTypeUtil";
 import GeneratedTable from "./components/GeneratedTable";
+import APIFormFile from "./components/APIFormFile";
 
 const App = () => {
 	const [inputs, setInputs] = useState({
@@ -131,20 +132,25 @@ const App = () => {
 	};
 
 	return (
-		<div className='min-h-screen w-full md:w-4/5 lg:w-4/4 xl:w-2/3 bg-gradient-to-r from-gray-400 to-green-700 py-6 flex flex-col justify-center sm:py-12 mx-auto'>
+		<div className='min-h-screen w-full md:w-4/5 lg:w-4/4 xl:w-2/3 bg-gradient-to-r from-gray-400 to-green-700 py-6 flex flex-col justify-center sm:py-12 mx-auto flex items-center'>
 			<h1 className='text-4xl font-bold text-center mb-4'>
 				BMR Template Generator
 			</h1>
-			<APIForm
-				inputs={inputs}
-				handleChange={(e) =>
-					setInputs((prevState) => ({
-						...prevState,
-						[e.target.name]: e.target.value.trim(),
-					}))
-				}
-				onSubmit={submitForm}
-			/>
+			<h2 className='text-2xl font-bold mb-10'>Enter the information:</h2>
+			<div className='flex'>
+				<APIForm
+					inputs={inputs}
+					handleChange={(e) =>
+						setInputs((prevState) => ({
+							...prevState,
+							[e.target.name]: e.target.value.trim(),
+						}))
+					}
+					onSubmit={submitForm}
+				/>
+				<APIFormFile setSearchType={setSearchType} makeQuery={makeQuery} />
+			</div>
+
 			<GeneratedTable dataConfig={dataConfig} />
 			<br></br>
 		</div>
