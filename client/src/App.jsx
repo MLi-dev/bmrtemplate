@@ -4,6 +4,7 @@ import GenerateFormInput from "./components/GenerateFormInput";
 import determineFormatType from "./utils/determineFormatType";
 import GeneratedTable from "./components/GeneratedTable";
 import GenerateFileInput from "./components/GenerateFileInput";
+import { generateDataConfig } from "./utils/generateDataConfig";
 
 const App = () => {
 	const [inputs, setInputs] = useState({
@@ -28,42 +29,21 @@ const App = () => {
 	const [hasEpisodic, setHasEpisodic] = useState(false);
 	const [hasNonEpisodic, setHasNonEpisodic] = useState(false);
 	const [hasUnknown, setHasUnknown] = useState(false);
-	const dataConfig = {
-		sections: [
-			{
-				name: "Episodics",
-				list: episodicList,
-				hasTemplate: hasEpisodic,
-				xmlArray: episodicXML,
-				buttonName: "Episodics",
-			},
-			{
-				name: "NonEpisodic",
-				list: nonEpisodicList,
-				hasTemplate: hasNonEpisodic,
-				xmlArray: nonEpisodicXML,
-				buttonName: "Stand-Alone Works",
-			},
-			{
-				name: "Edits",
-				list: editEIDRList,
-				hasTemplate: hasEditFormat,
-				xmlArray: editXML,
-				buttonName: "Edits",
-			},
-			{
-				name: "Unknown",
-				list: unknownList,
-				hasTemplate: hasUnknown,
-				xmlArray: unknownXML,
-				buttonName: "Unknown",
-			},
-			{
-				name: "Error",
-				list: eidrErrorList,
-			},
-		],
-	};
+	const dataConfig = generateDataConfig(
+		episodicList,
+		hasEpisodic,
+		episodicXML,
+		nonEpisodicList,
+		hasNonEpisodic,
+		nonEpisodicXML,
+		editEIDRList,
+		hasEditFormat,
+		editXML,
+		unknownList,
+		hasUnknown,
+		unknownXML,
+		eidrErrorList
+	);
 
 	const callAPI = async (query, requestOptions, eidr_id) => {
 		const response = await fetch(query, requestOptions);
