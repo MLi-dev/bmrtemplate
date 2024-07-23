@@ -6,14 +6,13 @@ const GenerateFormInput = ({
 	handleChange,
 	setSearchType,
 	makeQuery,
+	onLoading,
 }) => {
 	const inputsInfo = [
 		"Input an ID to a piece of media (e.g. a movie, TV show, etc.)",
 	];
-	const [loading, setLoading] = useState(false);
 	const submitForm = () => {
-		setLoading(true);
-		console.log("Loading!", loading);
+		onLoading(true);
 		const inputsArr = inputs?.eidr_id?.split(",\n");
 		setSearchType("byEidrId");
 		const jobs = [];
@@ -29,11 +28,10 @@ const GenerateFormInput = ({
 				}
 				completedJobs++;
 				if (completedJobs === jobs.length) {
-					setLoading(false); // Hide loading modal when all jobs are done
+					onLoading(false); // Hide loading modal when all jobs are done
 				}
 			}, index * 20000); // Delay each call by 20000 ms more than the previous one
 		});
-		console.log("Not Loading Anymore!", loading);
 	};
 	return (
 		<div className='max-w-screen-xl mx-auto px-8 text-center font-poppins'>
@@ -66,7 +64,6 @@ const GenerateFormInput = ({
 			>
 				Generate From Text Input
 			</button>
-			{loading && <LoadingModal modalIsOpen={loading} />}
 		</div>
 	);
 };

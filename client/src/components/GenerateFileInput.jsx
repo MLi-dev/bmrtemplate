@@ -3,10 +3,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import LoadingModal from "./LoadingModal"; // Import the LoadingModal component
 
-function GenerateFileInput({ setSearchType, makeQuery }) {
+function GenerateFileInput({ setSearchType, makeQuery, onLoading }) {
 	// State to store the file content
 	const [file, setFile] = useState(null);
-	const [loading, setLoading] = useState(false); // State to manage loading
 
 	const handleFileChange = (event) => {
 		setFile(event.target.files[0]);
@@ -14,7 +13,7 @@ function GenerateFileInput({ setSearchType, makeQuery }) {
 
 	const submitForm = () => {
 		if (file) {
-			setLoading(true); // Show loading modal
+			onLoading(true); // Show loading modal
 			const reader = new FileReader();
 			reader.onload = (e) => {
 				const fileContent = e.target.result;
@@ -31,7 +30,7 @@ function GenerateFileInput({ setSearchType, makeQuery }) {
 							makeQuery(job[i]);
 						}
 						if (index === jobs.length - 1) {
-							setLoading(false); // Hide loading modal when all jobs are done
+							onLoading(false); // Hide loading modal when all jobs are done
 						}
 					}, index * 20000); // Delay each call by 20000 ms more than the previous one
 				});
@@ -42,7 +41,7 @@ function GenerateFileInput({ setSearchType, makeQuery }) {
 
 	return (
 		<div className='flex flex-col items-center justify-center'>
-			<label className='text-xl font-bold mr-2 bg-gray-300 text-lg rounded-lg mb-2'>
+			<label className='text-xl font-bold mr-2 bg-gray-300 text-lg rounded-lg mb-2 mt-5'>
 				Upload a file
 			</label>
 			<div className='flex items-center bg-white py-2 shadow-md rounded-lg'>
@@ -64,7 +63,6 @@ function GenerateFileInput({ setSearchType, makeQuery }) {
 			>
 				Generate from File
 			</button>
-			{loading && <LoadingModal modalIsOpen={loading} />}
 			{/* Render LoadingModal */}
 		</div>
 	);

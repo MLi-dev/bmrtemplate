@@ -5,6 +5,7 @@ import determineFormatType from "./utils/determineFormatType";
 import GeneratedTable from "./components/GeneratedTable";
 import GenerateFileInput from "./components/GenerateFileInput";
 import { generateDataConfig } from "./utils/generateDataConfig";
+import LoadingModal from "./components/LoadingModal";
 
 const App = () => {
 	const [inputs, setInputs] = useState({
@@ -29,6 +30,8 @@ const App = () => {
 	const [hasEpisodic, setHasEpisodic] = useState(false);
 	const [hasNonEpisodic, setHasNonEpisodic] = useState(false);
 	const [hasUnknown, setHasUnknown] = useState(false);
+	const [loading, setLoading] = useState(false);
+	const [isForm, setIsForm] = useState(true);
 	const dataConfig = generateDataConfig(
 		episodicList,
 		hasEpisodic,
@@ -44,6 +47,13 @@ const App = () => {
 		unknownXML,
 		eidrErrorList
 	);
+
+	const handleLoading = (bool) => {
+		setLoading(bool);
+	};
+	const handleFormChange = () => {
+		setIsForm((prev) => !prev);
+	};
 
 	const callAPI = async (query, requestOptions, eidr_id) => {
 		const response = await fetch(query, requestOptions);
@@ -108,25 +118,38 @@ const App = () => {
 				BMR Template Generator
 			</h1>
 			<h2 className='text-2xl font-bold mb-10'>Enter the information:</h2>
+			<h2 className='text-2xl font-bold mb-1'>Select search type:</h2>
+			<button
+				onClick={handleFormChange}
+				className='text-white bg-black rounded-lg shadow-lg p-2 mt-4 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110'
+			>
+				Switch Search Mode
+			</button>
 			<div className='flex'>
-				<GenerateFormInput
-					inputs={inputs}
-					handleChange={(e) =>
-						setInputs((prevState) => ({
-							...prevState,
-							[e.target.name]: e.target.value.trim(),
-						}))
-					}
-					setSearchType={setSearchType}
-					makeQuery={makeQuery}
-				/>
-				<GenerateFileInput
-					setSearchType={setSearchType}
-					makeQuery={makeQuery}
-				/>
+				{isForm ? (
+					<GenerateFormInput
+						inputs={inputs}
+						handleChange={(e) =>
+							setInputs((prevState) => ({
+								...prevState,
+								[e.target.name]: e.target.value.trim(),
+							}))
+						}
+						setSearchType={setSearchType}
+						makeQuery={makeQuery}
+						onLoading={handleLoading}
+					/>
+				) : (
+					<GenerateFileInput
+						setSearchType={setSearchType}
+						makeQuery={makeQuery}
+						onLoading={handleLoading}
+					/>
+				)}
 			</div>
 
 			<GeneratedTable dataConfig={dataConfig} />
+			{loading && <LoadingModal modalIsOpen={loading} />}
 			<br></br>
 		</div>
 	);
