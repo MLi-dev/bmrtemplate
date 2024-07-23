@@ -1,4 +1,4 @@
-import EditTemplate from "./editTemplate";
+import GenerateTemplate from "./GenerateTemplate";
 const GeneratedTable = ({ dataConfig }) => {
 	return (
 		<table className='min-w-full divide-y divide-gray-200 mt-6'>
@@ -12,7 +12,7 @@ const GeneratedTable = ({ dataConfig }) => {
 						>
 							{section.name}: {section.list?.length}
 							{section.hasTemplate && (
-								<EditTemplate
+								<GenerateTemplate
 									xmlArray={section.xmlArray}
 									buttonName={section.buttonName}
 								/>

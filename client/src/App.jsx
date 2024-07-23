@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import APIForm from "./components/APIForm";
-import EditTemplate from "./components/editTemplate";
-import determineFormatType from "./utils/FormatTypeUtil";
+import GenerateTemplate from "./components/GenerateTemplate";
+import determineFormatType from "./utils/determineFormatType";
 import GeneratedTable from "./components/GeneratedTable";
 import APIFormFile from "./components/APIFormFile";
 
@@ -32,25 +32,25 @@ const App = () => {
 	const dataConfig = {
 		sections: [
 			{
-				name: "Episodic",
+				name: "Episodics",
 				list: episodicList,
 				hasTemplate: hasEpisodic,
 				xmlArray: episodicXML,
-				buttonName: "Episodic",
+				buttonName: "Episodics",
 			},
 			{
 				name: "NonEpisodic",
 				list: nonEpisodicList,
 				hasTemplate: hasNonEpisodic,
 				xmlArray: nonEpisodicXML,
-				buttonName: "NonEpisodic",
+				buttonName: "Stand-Alone Works",
 			},
 			{
-				name: "Edit",
+				name: "Edits",
 				list: editEIDRList,
 				hasTemplate: hasEditFormat,
 				xmlArray: editXML,
-				buttonName: "Edit",
+				buttonName: "Edits",
 			},
 			{
 				name: "Unknown",
