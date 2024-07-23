@@ -26,8 +26,8 @@ const GeneratedTable = ({ dataConfig }) => {
 					{dataConfig.sections.map((section) => (
 						<td key={section.name} className='px-6 py-4 whitespace-nowrap'>
 							{section.list?.length > 0 &&
-								section.list.map((eidr_id) => (
-									<div key={eidr_id}>{eidr_id}</div>
+								section.list.map((eidr_id, index) => (
+									<div key={index}>{eidr_id}</div>
 								))}
 						</td>
 					))}

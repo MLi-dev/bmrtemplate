@@ -126,9 +126,17 @@ const App = () => {
 		const inputsArr = inputs?.eidr_id?.split(",\n");
 		console.log(inputsArr);
 		setSearchType("byEidrId");
-		for (let i = 0; i < inputsArr.length; i++) {
-			makeQuery(inputsArr[i]);
+		const jobs = [];
+		const jobsSize = inputsArr.length / 1000;
+		for (let i = 0; i < jobsSize; i++) {
+			jobs.push(inputsArr.slice(i * 1000, (i + 1) * 1000));
 		}
+		console.log(jobs.length);
+		jobs.forEach((job, index) => {
+			setTimeout(() => {
+				makeQuery(job);
+			}, index * 5000); // Delay each call by 5000 ms more than the previous one
+		});
 	};
 
 	return (
