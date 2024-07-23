@@ -122,22 +122,6 @@ const App = () => {
 			eidr_id: "",
 		});
 	};
-	const submitForm = () => {
-		const inputsArr = inputs?.eidr_id?.split(",\n");
-		console.log(inputsArr);
-		setSearchType("byEidrId");
-		const jobs = [];
-		const jobsSize = inputsArr.length / 1000;
-		for (let i = 0; i < jobsSize; i++) {
-			jobs.push(inputsArr.slice(i * 1000, (i + 1) * 1000));
-		}
-		console.log(jobs.length);
-		jobs.forEach((job, index) => {
-			setTimeout(() => {
-				makeQuery(job);
-			}, index * 5000); // Delay each call by 5000 ms more than the previous one
-		});
-	};
 
 	return (
 		<div className='min-h-screen w-full md:w-4/5 lg:w-4/4 xl:w-2/3 bg-gradient-to-r from-gray-400 to-green-700 py-6 flex flex-col justify-center sm:py-12 mx-auto flex items-center'>
@@ -154,7 +138,8 @@ const App = () => {
 							[e.target.name]: e.target.value.trim(),
 						}))
 					}
-					onSubmit={submitForm}
+					setSearchType={setSearchType}
+					makeQuery={makeQuery}
 				/>
 				<APIFormFile setSearchType={setSearchType} makeQuery={makeQuery} />
 			</div>

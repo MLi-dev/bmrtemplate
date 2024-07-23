@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
+import LoadingModal from "./LoadingModal"; // Import the LoadingModal component
+
 function APIFormFile({ setSearchType, makeQuery }) {
 	// State to store the file content
 	const [file, setFile] = useState(null);
+	const [loading, setLoading] = useState(false); // State to manage loading
 
 	const handleFileChange = (event) => {
 		setFile(event.target.files[0]);
@@ -11,6 +14,7 @@ function APIFormFile({ setSearchType, makeQuery }) {
 
 	const submitForm = () => {
 		if (file) {
+			setLoading(true); // Show loading modal
 			const reader = new FileReader();
 			reader.onload = (e) => {
 				const fileContent = e.target.result;
@@ -26,7 +30,10 @@ function APIFormFile({ setSearchType, makeQuery }) {
 						for (let i = 0; i < job.length; i++) {
 							makeQuery(job[i]);
 						}
-					}, index * 20000); // Delay each call by 5000 ms more than the previous one
+						if (index === jobs.length - 1) {
+							setLoading(false); // Hide loading modal when all jobs are done
+						}
+					}, index * 20000); // Delay each call by 20000 ms more than the previous one
 				});
 			};
 			reader.readAsText(file);
@@ -57,6 +64,8 @@ function APIFormFile({ setSearchType, makeQuery }) {
 			>
 				Generate from File
 			</button>
+			{loading && <LoadingModal modalIsOpen={loading} />}
+			{/* Render LoadingModal */}
 		</div>
 	);
 }

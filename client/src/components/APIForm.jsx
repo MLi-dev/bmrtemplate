@@ -1,9 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
+import LoadingModal from "./LoadingModal";
 
-const APIForm = ({ inputs, handleChange, onSubmit }) => {
+const APIForm = ({ inputs, handleChange, setSearchType, makeQuery }) => {
 	const inputsInfo = [
 		"Input an ID to a piece of media (e.g. a movie, TV show, etc.)",
 	];
+	const [loading, setLoading] = useState(false);
+	const submitForm = () => {
+		setLoading(true);
+		console.log("Loading!", loading);
+		const inputsArr = inputs?.eidr_id?.split(",\n");
+		setSearchType("byEidrId");
+		const jobs = [];
+		const jobsSize = inputsArr.length / 1000;
+		for (let i = 0; i < jobsSize; i++) {
+			jobs.push(inputsArr.slice(i * 1000, (i + 1) * 1000));
+		}
+		let completedJobs = 0;
+		jobs.forEach((job, index) => {
+			setTimeout(() => {
+				for (let i = 0; i < job.length; i++) {
+					makeQuery(job[i]);
+				}
+				completedJobs++;
+				if (completedJobs === jobs.length) {
+					setLoading(false); // Hide loading modal when all jobs are done
+				}
+			}, index * 20000); // Delay each call by 20000 ms more than the previous one
+		});
+		console.log("Not Loading Anymore!", loading);
+	};
 	return (
 		<div className='max-w-screen-xl mx-auto px-8 text-center font-poppins'>
 			<form className='flex justify-between items-stretch relative p-4 flex-wrap'>
@@ -31,10 +57,11 @@ const APIForm = ({ inputs, handleChange, onSubmit }) => {
 			<button
 				type='submit'
 				className='text-white bg-black rounded-lg shadow-lg p-2 mt-4 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110'
-				onClick={onSubmit}
+				onClick={submitForm}
 			>
-				Generate
+				Generate From Text Input
 			</button>
+			{loading && <LoadingModal modalIsOpen={loading} />}
 		</div>
 	);
 };
