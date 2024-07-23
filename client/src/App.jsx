@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./App.css";
-import APIForm from "./components/APIForm";
-import GenerateTemplate from "./components/GenerateTemplate";
+import GenerateFormInput from "./components/GenerateFormInput";
 import determineFormatType from "./utils/determineFormatType";
 import GeneratedTable from "./components/GeneratedTable";
-import APIFormFile from "./components/APIFormFile";
+import GenerateFileInput from "./components/GenerateFileInput";
+import { generateDataConfig } from "./utils/generateDataConfig";
+import LoadingModal from "./components/LoadingModal";
 
 const App = () => {
 	const [inputs, setInputs] = useState({
@@ -29,41 +30,29 @@ const App = () => {
 	const [hasEpisodic, setHasEpisodic] = useState(false);
 	const [hasNonEpisodic, setHasNonEpisodic] = useState(false);
 	const [hasUnknown, setHasUnknown] = useState(false);
-	const dataConfig = {
-		sections: [
-			{
-				name: "Episodics",
-				list: episodicList,
-				hasTemplate: hasEpisodic,
-				xmlArray: episodicXML,
-				buttonName: "Episodics",
-			},
-			{
-				name: "NonEpisodic",
-				list: nonEpisodicList,
-				hasTemplate: hasNonEpisodic,
-				xmlArray: nonEpisodicXML,
-				buttonName: "Stand-Alone Works",
-			},
-			{
-				name: "Edits",
-				list: editEIDRList,
-				hasTemplate: hasEditFormat,
-				xmlArray: editXML,
-				buttonName: "Edits",
-			},
-			{
-				name: "Unknown",
-				list: unknownList,
-				hasTemplate: hasUnknown,
-				xmlArray: unknownXML,
-				buttonName: "Unknown",
-			},
-			{
-				name: "Error",
-				list: eidrErrorList,
-			},
-		],
+	const [loading, setLoading] = useState(false);
+	const [isForm, setIsForm] = useState(true);
+	const dataConfig = generateDataConfig(
+		episodicList,
+		hasEpisodic,
+		episodicXML,
+		nonEpisodicList,
+		hasNonEpisodic,
+		nonEpisodicXML,
+		editEIDRList,
+		hasEditFormat,
+		editXML,
+		unknownList,
+		hasUnknown,
+		unknownXML,
+		eidrErrorList
+	);
+
+	const handleLoading = (bool) => {
+		setLoading(bool);
+	};
+	const handleFormChange = () => {
+		setIsForm((prev) => !prev);
 	};
 
 	const callAPI = async (query, requestOptions, eidr_id) => {
@@ -122,22 +111,6 @@ const App = () => {
 			eidr_id: "",
 		});
 	};
-	const submitForm = () => {
-		const inputsArr = inputs?.eidr_id?.split(",\n");
-		console.log(inputsArr);
-		setSearchType("byEidrId");
-		const jobs = [];
-		const jobsSize = inputsArr.length / 1000;
-		for (let i = 0; i < jobsSize; i++) {
-			jobs.push(inputsArr.slice(i * 1000, (i + 1) * 1000));
-		}
-		console.log(jobs.length);
-		jobs.forEach((job, index) => {
-			setTimeout(() => {
-				makeQuery(job);
-			}, index * 5000); // Delay each call by 5000 ms more than the previous one
-		});
-	};
 
 	return (
 		<div className='min-h-screen w-full md:w-4/5 lg:w-4/4 xl:w-2/3 bg-gradient-to-r from-gray-400 to-green-700 py-6 flex flex-col justify-center sm:py-12 mx-auto flex items-center'>
@@ -145,21 +118,38 @@ const App = () => {
 				BMR Template Generator
 			</h1>
 			<h2 className='text-2xl font-bold mb-10'>Enter the information:</h2>
+			<h2 className='text-2xl font-bold mb-1'>Select search type:</h2>
+			<button
+				onClick={handleFormChange}
+				className='text-white bg-black rounded-lg shadow-lg p-2 mt-4 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110'
+			>
+				Switch Search Mode
+			</button>
 			<div className='flex'>
-				<APIForm
-					inputs={inputs}
-					handleChange={(e) =>
-						setInputs((prevState) => ({
-							...prevState,
-							[e.target.name]: e.target.value.trim(),
-						}))
-					}
-					onSubmit={submitForm}
-				/>
-				<APIFormFile setSearchType={setSearchType} makeQuery={makeQuery} />
+				{isForm ? (
+					<GenerateFormInput
+						inputs={inputs}
+						handleChange={(e) =>
+							setInputs((prevState) => ({
+								...prevState,
+								[e.target.name]: e.target.value.trim(),
+							}))
+						}
+						setSearchType={setSearchType}
+						makeQuery={makeQuery}
+						onLoading={handleLoading}
+					/>
+				) : (
+					<GenerateFileInput
+						setSearchType={setSearchType}
+						makeQuery={makeQuery}
+						onLoading={handleLoading}
+					/>
+				)}
 			</div>
 
 			<GeneratedTable dataConfig={dataConfig} />
+			{loading && <LoadingModal modalIsOpen={loading} />}
 			<br></br>
 		</div>
 	);
