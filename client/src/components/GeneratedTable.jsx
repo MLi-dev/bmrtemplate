@@ -1,4 +1,4 @@
-import EditTemplate from "./editTemplate";
+import GenerateTemplate from "./GenerateTemplate";
 const GeneratedTable = ({ dataConfig }) => {
 	return (
 		<table className='min-w-full divide-y divide-gray-200 mt-6'>
@@ -12,7 +12,7 @@ const GeneratedTable = ({ dataConfig }) => {
 						>
 							{section.name}: {section.list?.length}
 							{section.hasTemplate && (
-								<EditTemplate
+								<GenerateTemplate
 									xmlArray={section.xmlArray}
 									buttonName={section.buttonName}
 								/>
@@ -26,8 +26,8 @@ const GeneratedTable = ({ dataConfig }) => {
 					{dataConfig.sections.map((section) => (
 						<td key={section.name} className='px-6 py-4 whitespace-nowrap'>
 							{section.list?.length > 0 &&
-								section.list.map((eidr_id) => (
-									<div key={eidr_id}>{eidr_id}</div>
+								section.list.map((eidr_id, index) => (
+									<div key={index}>{eidr_id}</div>
 								))}
 						</td>
 					))}

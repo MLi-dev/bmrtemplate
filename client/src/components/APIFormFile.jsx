@@ -15,11 +15,19 @@ function APIFormFile({ setSearchType, makeQuery }) {
 			reader.onload = (e) => {
 				const fileContent = e.target.result;
 				const inputsArr = fileContent.split(",\n");
-				console.log(inputsArr);
 				setSearchType("byEidrId");
-				for (let i = 0; i < inputsArr.length; i++) {
-					makeQuery(inputsArr[i]);
+				const jobs = [];
+				const jobsSize = inputsArr.length / 1000;
+				for (let i = 0; i < jobsSize; i++) {
+					jobs.push(inputsArr.slice(i * 1000, (i + 1) * 1000));
 				}
+				jobs.forEach((job, index) => {
+					setTimeout(() => {
+						for (let i = 0; i < job.length; i++) {
+							makeQuery(job[i]);
+						}
+					}, index * 20000); // Delay each call by 5000 ms more than the previous one
+				});
 			};
 			reader.readAsText(file);
 		}
