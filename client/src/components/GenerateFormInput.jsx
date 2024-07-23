@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import LoadingModal from "./LoadingModal";
 
-const APIForm = ({ inputs, handleChange, setSearchType, makeQuery }) => {
+const GenerateFormInput = ({
+	inputs,
+	handleChange,
+	setSearchType,
+	makeQuery,
+}) => {
 	const inputsInfo = [
 		"Input an ID to a piece of media (e.g. a movie, TV show, etc.)",
 	];
@@ -65,4 +70,4 @@ const APIForm = ({ inputs, handleChange, setSearchType, makeQuery }) => {
 		</div>
 	);
 };
-export default APIForm;
+export default GenerateFormInput;

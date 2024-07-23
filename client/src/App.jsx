@@ -1,10 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./App.css";
-import APIForm from "./components/APIForm";
-import GenerateTemplate from "./components/GenerateTemplate";
+import GenerateFormInput from "./components/GenerateFormInput";
 import determineFormatType from "./utils/determineFormatType";
 import GeneratedTable from "./components/GeneratedTable";
-import APIFormFile from "./components/APIFormFile";
+import GenerateFileInput from "./components/GenerateFileInput";
 
 const App = () => {
 	const [inputs, setInputs] = useState({
@@ -130,7 +129,7 @@ const App = () => {
 			</h1>
 			<h2 className='text-2xl font-bold mb-10'>Enter the information:</h2>
 			<div className='flex'>
-				<APIForm
+				<GenerateFormInput
 					inputs={inputs}
 					handleChange={(e) =>
 						setInputs((prevState) => ({
@@ -141,7 +140,10 @@ const App = () => {
 					setSearchType={setSearchType}
 					makeQuery={makeQuery}
 				/>
-				<APIFormFile setSearchType={setSearchType} makeQuery={makeQuery} />
+				<GenerateFileInput
+					setSearchType={setSearchType}
+					makeQuery={makeQuery}
+				/>
 			</div>
 
 			<GeneratedTable dataConfig={dataConfig} />

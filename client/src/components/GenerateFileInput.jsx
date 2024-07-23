@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import LoadingModal from "./LoadingModal"; // Import the LoadingModal component
 
-function APIFormFile({ setSearchType, makeQuery }) {
+function GenerateFileInput({ setSearchType, makeQuery }) {
 	// State to store the file content
 	const [file, setFile] = useState(null);
 	const [loading, setLoading] = useState(false); // State to manage loading
@@ -70,4 +70,4 @@ function APIFormFile({ setSearchType, makeQuery }) {
 	);
 }
 
-export default APIFormFile;
+export default GenerateFileInput;
