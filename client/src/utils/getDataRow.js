@@ -1,4 +1,5 @@
 import excelToXMLMap from "../components/ExcelToXMLMap.js";
+
 const getDataRow = (xmlDoc, dataKeys, idx) => {
 	const baseElements = xmlDoc.getElementsByTagName("SelfDefinedMetadata");
 	let row = [];
@@ -99,11 +100,15 @@ const getDataRow = (xmlDoc, dataKeys, idx) => {
 								.textContent
 						: "";
 				row.push(value);
+			} else if (key === "Assigned EIDR ID") {
+				value =
+					baseObjectData.getElementsByTagName("ID").length > 0
+						? baseObjectData.getElementsByTagName("ID")[0].textContent
+						: "";
+				console.log("Assigned EIDR ID:", value); // Debugging log
+				row.push(value);
 			} else {
 				if (foundElements.length > 0) {
-					// Assuming we only care about the first found element for each key
-
-					// console.log(excelToXMLMap[key]);
 					value = foundElements[0].textContent || "";
 					row.push(value);
 				} else {
@@ -114,4 +119,5 @@ const getDataRow = (xmlDoc, dataKeys, idx) => {
 	}
 	return row;
 };
+
 export default getDataRow;

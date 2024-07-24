@@ -1,5 +1,5 @@
 const excelToXMLMap = {
-	"Parent EIDR/Row ID": "ID",
+	"Parent EIDR/Row ID": "Parent",
 	"Structural Type": "StructuralType",
 	"Referent Type": "ReferentType",
 	Title: "ResourceName",
@@ -25,7 +25,7 @@ const excelToXMLMap = {
 	"Description Language": "DescriptionLanguage",
 	"Registrant Extra": "RegistrantExtra",
 	"Operator's Notes": "Operator'sNotes",
-	"Assigned EIDR ID": "AssignedEIDRID",
+	"Assigned EIDR ID": "ID",
 	"Registration Errors & Notes": "RegistrationErrors&Notes",
 	"Edit Use": "EditUse",
 	"Color Type": "ColorType",
