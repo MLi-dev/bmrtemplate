@@ -13,7 +13,7 @@ const GenerateFormInput = ({
 	];
 	const submitForm = () => {
 		onLoading(true);
-		const inputsArr = inputs?.eidr_id?.split(",\n");
+		const inputsArr = inputs?.eidr_id?.split("\n");
 		setSearchType("byEidrId");
 		const jobs = [];
 		const jobsSize = inputsArr.length / 1000;
