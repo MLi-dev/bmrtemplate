@@ -5,15 +5,15 @@ import { faDownload } from "@fortawesome/free-solid-svg-icons";
 
 import generateExcel from "../utils/generateExcel";
 
-const handleButtonClick = (type, xmlArray) => {
-	generateExcel(type, xmlArray);
+const handleButtonClick = (type, xmlArray, templateFormat) => {
+	generateExcel(type, xmlArray, templateFormat);
 };
 
-const GenerateTemplate = ({ xmlArray, buttonName }) => {
+const GenerateTemplate = ({ xmlArray, buttonName, templateFormat }) => {
 	return (
 		<div className='relative flex items-center'>
 			<button
-				onClick={() => handleButtonClick(buttonName, xmlArray)}
+				onClick={() => handleButtonClick(buttonName, xmlArray, templateFormat)}
 				className='group'
 			>
 				<FontAwesomeIcon

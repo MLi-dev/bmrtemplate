@@ -15,6 +15,7 @@ const GeneratedTable = ({ dataConfig }) => {
 								<GenerateTemplate
 									xmlArray={section.xmlArray}
 									buttonName={section.buttonName}
+									templateFormat={section.templateFormat}
 								/>
 							)}
 						</th>

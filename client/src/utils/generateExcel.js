@@ -5,23 +5,23 @@ import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import unknowntemplate from "../assets/unknowntemplate.json";
 import getDataRow from "./getDataRow.js";
-const generateExcel = (type, xmlArray) => {
+const generateExcel = (type, xmlArray, templateFormat) => {
 	// Prepare Excel data
 	const rows = [];
 	rows.push(["version:", "22"]); // Assuming version is static as per the requirement
-	const metadataKeys = Object.keys(editTemplateFormat.metadata);
+	const metadataKeys = Object.keys(templateFormat.metadata);
 	const metadataRequired = metadataKeys.map((key) => {
-		if (editTemplateFormat.metadata[key].required === "TBD") {
+		if (templateFormat.metadata[key].required === "TBD") {
 			return "TBD";
 		}
-		return editTemplateFormat.metadata[key].required ? "required" : "optional";
+		return templateFormat.metadata[key].required ? "required" : "optional";
 	});
 	// rows.push(metadataKeys); // Third row: keys from metadata
 	rows.push(metadataRequired); // Second row: required or optional
 
 	// Data keys and their values
-	const dataKeys = Object.keys(editTemplateFormat.data);
-	const dataValues = dataKeys.map((key) => editTemplateFormat.data[key] || ""); // Replace null with 'null' string
+	const dataKeys = Object.keys(templateFormat.data);
+	const dataValues = dataKeys.map((key) => templateFormat.data[key] || ""); // Replace null with 'null' string
 	rows.push(dataKeys); // Third row: keys from data
 	xmlArray.forEach((xml, idx) => {
 		rows.push(getDataRow(xml, dataKeys, idx)); // Fourth row: values from data
