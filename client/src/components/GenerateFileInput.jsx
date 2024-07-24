@@ -32,7 +32,7 @@ function GenerateFileInput({ setSearchType, makeQuery, onLoading }) {
 						if (index === jobs.length - 1) {
 							onLoading(false); // Hide loading modal when all jobs are done
 						}
-					}, index * 20000); // Delay each call by 20000 ms more than the previous one
+					}, index * 25000); // Delay each call by 20000 ms more than the previous one
 				});
 			};
 			reader.readAsText(file);
